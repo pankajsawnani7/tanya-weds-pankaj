@@ -86,6 +86,10 @@
   const formError = document.getElementById("formError");
   const thanks = document.getElementById("rsvpThanks");
 
+  // Let Netlify receive the normal form POST and display the existing thank-you page.
+  // Keeping the browser's native submission avoids hiding server/network errors in fetch.
+  form.action = "/thank-you";
+
   // Show only the dates in the RSVP choices, and submit those dates as their values.
   const dateLabels = ["16-Dec-2026", "17-Dec-2026"];
   form.querySelectorAll('input[name="days"]').forEach((input, index) => {
@@ -136,42 +140,15 @@
     return ok;
   }
 
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
+  form.addEventListener("submit", (e) => {
     formError.hidden = true;
-    if (!validate()) return;
-
-    const data = new FormData(form);
-    const declining = data.get("attendance") === "Regretfully declines";
-    if (declining) {
-      ["days", "guests", "accommodation", "arrival", "diet"].forEach((k) => data.delete(k));
+    if (!validate()) {
+      e.preventDefault();
+      return;
     }
-    // Join multi-select "days" into one readable value
-    const days = data.getAll("days");
-    if (days.length) { data.delete("days"); data.append("days", days.join(", ")); }
-
+    // Do not prevent the valid submit: Netlify must receive it as a regular POST.
     submit.disabled = true;
     submit.classList.add("loading");
-    try {
-      const res = await fetch("/", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams(data).toString(),
-      });
-      if (!res.ok) throw new Error(`Status ${res.status}`);
-      const first = String(data.get("name")).trim().split(/\s+/)[0];
-      document.getElementById("thanksMsg").textContent = declining
-        ? `We'll miss you, ${first} — thank you for letting us know. You'll be in our hearts on the day.`
-        : `Your reply is with us, ${first}. We can't wait to celebrate with you!`;
-      form.hidden = true;
-      thanks.hidden = false;
-      thanks.focus();
-    } catch (err) {
-      formError.hidden = false;
-    } finally {
-      submit.disabled = false;
-      submit.classList.remove("loading");
-    }
   });
 
   route();
