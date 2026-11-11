@@ -2,6 +2,12 @@
   const WEDDING = new Date("2026-12-16T11:00:00+05:30");
   const pages = [...document.querySelectorAll(".page")];
 
+  // Load shared visual overrides for the calendar and story-image frame.
+  const visualStyles = document.createElement("link");
+  visualStyles.rel = "stylesheet";
+  visualStyles.href = "/image-frame-fix.css";
+  document.head.appendChild(visualStyles);
+
   /* ---------- Hash-based pages (#page-0 envelope, #page-1 invite, #page-2 RSVP) ---------- */
   function route() {
     const hash = location.hash.slice(1);
