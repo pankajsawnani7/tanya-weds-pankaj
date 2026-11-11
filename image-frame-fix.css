@@ -18,3 +18,9 @@
   transform: none;
   pointer-events: none;
 }
+
+/* Keep the mobile number in the same restrained type style as the name field. */
+input[type="tel"] {
+  font: 1.2rem var(--display);
+  letter-spacing: 0.01em;
+}

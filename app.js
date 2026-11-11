@@ -2,7 +2,7 @@
   const WEDDING = new Date("2026-12-16T11:00:00+05:30");
   const pages = [...document.querySelectorAll(".page")];
 
-  // Load shared visual overrides for the calendar and story-image frame.
+  // Load shared visual overrides for the calendar, story frame, and RSVP fields.
   const visualStyles = document.createElement("link");
   visualStyles.rel = "stylesheet";
   visualStyles.href = "/image-frame-fix.css";
@@ -86,9 +86,24 @@
   const form = document.getElementById("rsvpForm");
   const attendingOnly = document.getElementById("attendingOnly");
   const guests = document.getElementById("f-guests");
+  const phone = document.getElementById("f-phone");
+  const phoneError = form.querySelector('[data-for="phone"]');
   const submit = document.getElementById("rsvpSubmit");
   const formError = document.getElementById("formError");
   const thanks = document.getElementById("rsvpThanks");
+
+  // Accept exactly ten digits; do not include a country code.
+  phone.removeAttribute("placeholder");
+  phone.maxLength = 10;
+  phone.pattern = "[0-9]{10}";
+  phone.inputMode = "numeric";
+  phone.autocomplete = "tel-national";
+  phone.setAttribute("aria-describedby", "phoneError");
+  phoneError.id = "phoneError";
+  phoneError.textContent = "Enter a valid 10-digit mobile number.";
+  phone.addEventListener("input", () => {
+    phone.value = phone.value.replace(/\D/g, "").slice(0, 10);
+  });
 
   form.querySelectorAll("[data-step]").forEach((btn) =>
     btn.addEventListener("click", () => {
@@ -113,7 +128,7 @@
       if (bad) ok = false;
     };
     mark("name", !form.elements.name.value.trim());
-    mark("phone", form.elements.phone.value.replace(/\D/g, "").length < 7);
+    mark("phone", !/^\d{10}$/.test(phone.value));
     mark("attendance", !form.querySelector('[name="attendance"]:checked'));
     if (!ok) form.querySelector(".field.invalid input, .field.invalid")?.scrollIntoView({ behavior: "smooth", block: "center" });
     return ok;
