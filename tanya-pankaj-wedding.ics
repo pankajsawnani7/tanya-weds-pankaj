@@ -1,0 +1,14 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Tanya & Pankaj//Wedding//EN
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:tanya-pankaj-wedding-2026@tanya-pankaj-wedding.netlify.app
+DTSTAMP:20261108T000000Z
+DTSTART;VALUE=DATE:20261216
+DTEND;VALUE=DATE:20261218
+SUMMARY:Tanya & Pankaj's Wedding
+LOCATION:Orbit99 Club & Resort\, near Kaka Farm\, Vadodara\, Gujarat
+DESCRIPTION:Two days of celebrations — Mehendi & Sangeet on 16 Dec\, Haldi\, Baraat & Wedding on 17 Dec. https://tanya-pankaj-wedding.netlify.app
+END:VEVENT
+END:VCALENDAR
