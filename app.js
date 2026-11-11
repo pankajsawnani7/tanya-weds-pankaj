@@ -86,9 +86,23 @@
   const formError = document.getElementById("formError");
   const thanks = document.getElementById("rsvpThanks");
 
-  // Let Netlify receive the normal form POST and display the existing thank-you page.
-  // Keeping the browser's native submission avoids hiding server/network errors in fetch.
-  form.action = "/thank-you";
+  const thanksMsg = document.getElementById("thanksMsg");
+
+  // Keep the date calendar collapsed until requested, then show the selected date.
+  const arrivalPicker = document.getElementById("arrivalPicker");
+  const arrivalSummary = document.getElementById("arrivalSummary");
+  arrivalPicker.addEventListener("change", (e) => {
+    if (e.target.name !== "arrival") return;
+    arrivalSummary.textContent = `${Number(e.target.value.slice(-2))} December 2026`;
+    arrivalPicker.open = false;
+    arrivalSummary.focus();
+  });
+  arrivalPicker.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      arrivalPicker.open = false;
+      arrivalSummary.focus();
+    }
+  });
 
   // Show only the dates in the RSVP choices, and submit those dates as their values.
   const dateLabels = ["16-Dec-2026", "17-Dec-2026"];
@@ -136,19 +150,55 @@
     mark("name", !form.elements.name.value.trim());
     mark("phone", !/^\d{10}$/.test(phone.value));
     mark("attendance", !form.querySelector('[name="attendance"]:checked'));
+    const arrival = form.elements.arrival.value;
+    const declining = form.elements.attendance.value === "Regretfully declines";
+    mark("arrival", !declining && arrival !== "" && !/^2026-12-(14|15|16|17)$/.test(arrival));
     if (!ok) form.querySelector(".field.invalid input, .field.invalid")?.scrollIntoView({ behavior: "smooth", block: "center" });
     return ok;
   }
 
-  form.addEventListener("submit", (e) => {
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (submit.disabled) return;
     formError.hidden = true;
-    if (!validate()) {
-      e.preventDefault();
-      return;
+    if (!validate()) return;
+
+    const data = new FormData(form);
+    const name = data.get("name").trim();
+    const declined = data.get("attendance") === "Regretfully declines";
+    // Netlify stores multi-select dates as one readable field.
+    data.set("days", declined ? "" : data.getAll("days").join(", "));
+    if (declined) {
+      data.set("guests", "0");
+      data.set("arrival", "");
     }
-    // Do not prevent the valid submit: Netlify must receive it as a regular POST.
     submit.disabled = true;
     submit.classList.add("loading");
+
+    try {
+      const response = await fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams(data).toString()
+      });
+      if (!response.ok) throw new Error("RSVP submission failed");
+
+      thanksMsg.textContent = declined
+        ? `We'll miss you, ${name} — thank you for letting us know. You'll be in our hearts on the day.`
+        : `Your reply is with us, ${name}. We can't wait to celebrate with you!`;
+      form.hidden = true;
+      thanks.hidden = false;
+      thanks.focus({ preventScroll: true });
+      thanks.scrollIntoView({
+        behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth",
+        block: "center"
+      });
+    } catch {
+      formError.hidden = false;
+    } finally {
+      submit.disabled = false;
+      submit.classList.remove("loading");
+    }
   });
 
   route();
