@@ -2,12 +2,6 @@
   const WEDDING = new Date("2026-12-16T11:00:00+05:30");
   const pages = [...document.querySelectorAll(".page")];
 
-  // Load shared visual overrides for the calendar, story frame, and RSVP fields.
-  const visualStyles = document.createElement("link");
-  visualStyles.rel = "stylesheet";
-  visualStyles.href = "/image-frame-fix.css";
-  document.head.appendChild(visualStyles);
-
   /* ---------- Hash-based pages (#page-0 envelope, #page-1 invite, #page-2 RSVP) ---------- */
   function route() {
     const hash = location.hash.slice(1);
@@ -92,14 +86,28 @@
   const formError = document.getElementById("formError");
   const thanks = document.getElementById("rsvpThanks");
 
+  // Show only the dates in the RSVP choices, and submit those dates as their values.
+  const daysFieldset = attendingOnly.querySelector('input[name="days"]')?.closest("fieldset");
+  if (daysFieldset) {
+    daysFieldset.setAttribute("aria-label", "Select the dates you will attend");
+    const legend = daysFieldset.querySelector("legend");
+    if (legend) legend.hidden = true;
+  }
+  const dateLabels = ["16-Dec-2026", "17-Dec-2026"];
+  form.querySelectorAll('input[name="days"]').forEach((input, index) => {
+    if (dateLabels[index]) {
+      input.value = dateLabels[index];
+      const label = input.nextElementSibling;
+      if (label) label.textContent = dateLabels[index];
+    }
+  });
+
   // Accept exactly ten digits; do not include a country code.
   phone.removeAttribute("placeholder");
   phone.maxLength = 10;
   phone.pattern = "[0-9]{10}";
   phone.inputMode = "numeric";
   phone.autocomplete = "tel-national";
-  phone.setAttribute("aria-describedby", "phoneError");
-  phoneError.id = "phoneError";
   phoneError.textContent = "Enter a valid 10-digit mobile number.";
   phone.addEventListener("input", () => {
     phone.value = phone.value.replace(/\D/g, "").slice(0, 10);
