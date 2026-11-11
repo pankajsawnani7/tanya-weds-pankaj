@@ -24,3 +24,17 @@ input[type="tel"] {
   font: 1.2rem var(--display);
   letter-spacing: 0.01em;
 }
+
+/* Give the envelope opening a little more time to unfold. */
+.env-flap {
+  transition-duration: 1s;
+}
+
+.env-letter {
+  transition-duration: 1.2s;
+  transition-delay: 0.5s;
+}
+
+.env-seal {
+  transition-duration: 0.55s;
+}
