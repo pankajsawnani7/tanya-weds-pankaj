@@ -31,7 +31,7 @@
     if (envelope.classList.contains("open")) return;
     envelope.classList.add("open");
     const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-    setTimeout(() => { location.hash = "page-1"; }, reduce ? 50 : 1700);
+    setTimeout(() => { location.hash = "page-1"; }, reduce ? 50 : 2800);
   });
 
   /* ---------- Scroll reveals ---------- */
@@ -87,12 +87,6 @@
   const thanks = document.getElementById("rsvpThanks");
 
   // Show only the dates in the RSVP choices, and submit those dates as their values.
-  const daysFieldset = attendingOnly.querySelector('input[name="days"]')?.closest("fieldset");
-  if (daysFieldset) {
-    daysFieldset.setAttribute("aria-label", "Select the dates you will attend");
-    const legend = daysFieldset.querySelector("legend");
-    if (legend) legend.hidden = true;
-  }
   const dateLabels = ["16-Dec-2026", "17-Dec-2026"];
   form.querySelectorAll('input[name="days"]').forEach((input, index) => {
     if (dateLabels[index]) {
