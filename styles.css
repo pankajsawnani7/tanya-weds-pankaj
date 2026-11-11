@@ -1241,3 +1241,60 @@ textarea {
     transform: none;
   }
 }
+
+/* Fixed arrival calendar: only the four available dates are interactive. */
+.arrival-picker { max-width: 23rem; }
+.arrival-picker summary {
+  cursor: pointer;
+  padding: 0.6rem 0.1rem;
+  border-bottom: 1px solid #9ca28e;
+  font: 1.2rem var(--display);
+}
+.arrival-picker summary:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+.arrival-picker[open] summary { margin-bottom: 0.6rem; }
+.arrival-calendar {
+  max-width: 23rem;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  background: var(--paper);
+}
+.arrival-month {
+  margin: 0 0 0.7rem;
+  text-align: center;
+  font: 500 1.5rem var(--display);
+}
+.arrival-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.25rem;
+  text-align: center;
+  align-items: center;
+}
+.arrival-weekday { font-size: 0.65rem; color: var(--ink-soft); }
+.arrival-unavailable { color: var(--ink-soft); opacity: 0.55; }
+.field .arrival-day {
+  position: relative;
+  margin: 0;
+  font: inherit;
+  letter-spacing: normal;
+  cursor: pointer;
+}
+.arrival-day input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+.arrival-day span {
+  display: grid;
+  place-items: center;
+  min-height: 2.75rem;
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+}
+.arrival-day:hover span { background: var(--paper-2); }
+.arrival-day input:checked + span { background: var(--ink); color: var(--paper); }
+.arrival-day input:focus-visible + span { outline: 2px solid var(--rose); outline-offset: 2px; }

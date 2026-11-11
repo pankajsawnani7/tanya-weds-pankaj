@@ -143,7 +143,7 @@
       <p class="eyebrow">A SEAT AT OUR CELEBRATION</p><h2 id="rsvp-title">With love, <em>say yes.</em></h2>
       <p class="rsvp-intro">We'd love for you to be part of our celebration! Share your details and we'll follow up with everything you need.</p>
 
-      <form name="rsvp" id="rsvpForm" method="POST" action="/" data-netlify="true" netlify-honeypot="bot-field" novalidate>
+      <form name="rsvp" id="rsvpForm" method="POST" action="/thank-you" data-netlify="true" netlify-honeypot="bot-field" novalidate>
         <input type="hidden" name="form-name" value="rsvp" />
         <input type="hidden" name="subject" value="New RSVP for Tanya & Pankaj's wedding" />
         <p class="hp"><label>Don't fill this out: <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
@@ -178,10 +178,58 @@
             </div>
           </fieldset>
 
-          <div class="field">
-            <label for="f-arrival">On which date are you going to arrive?</label>
-            <input id="f-arrival" name="arrival" type="date" />
-          </div>
+          <fieldset class="field arrival-field">
+            <legend>When are you arriving?</legend>
+            <details class="arrival-picker" id="arrivalPicker">
+              <summary id="arrivalSummary">Choose arrival date</summary>
+            <div class="arrival-calendar">
+              <p class="arrival-month">December 2026</p>
+              <div class="arrival-grid">
+                <span class="arrival-weekday">Sun</span>
+                <span class="arrival-weekday">Mon</span>
+                <span class="arrival-weekday">Tue</span>
+                <span class="arrival-weekday">Wed</span>
+                <span class="arrival-weekday">Thu</span>
+                <span class="arrival-weekday">Fri</span>
+                <span class="arrival-weekday">Sat</span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span class="arrival-unavailable" aria-label="1 December 2026, unavailable">1</span>
+                <span class="arrival-unavailable" aria-label="2 December 2026, unavailable">2</span>
+                <span class="arrival-unavailable" aria-label="3 December 2026, unavailable">3</span>
+                <span class="arrival-unavailable" aria-label="4 December 2026, unavailable">4</span>
+                <span class="arrival-unavailable" aria-label="5 December 2026, unavailable">5</span>
+                <span class="arrival-unavailable" aria-label="6 December 2026, unavailable">6</span>
+                <span class="arrival-unavailable" aria-label="7 December 2026, unavailable">7</span>
+                <span class="arrival-unavailable" aria-label="8 December 2026, unavailable">8</span>
+                <span class="arrival-unavailable" aria-label="9 December 2026, unavailable">9</span>
+                <span class="arrival-unavailable" aria-label="10 December 2026, unavailable">10</span>
+                <span class="arrival-unavailable" aria-label="11 December 2026, unavailable">11</span>
+                <span class="arrival-unavailable" aria-label="12 December 2026, unavailable">12</span>
+                <span class="arrival-unavailable" aria-label="13 December 2026, unavailable">13</span>
+                <label class="arrival-day"><input type="radio" name="arrival" value="2026-12-14" aria-label="14 December 2026" /><span>14</span></label>
+                <label class="arrival-day"><input type="radio" name="arrival" value="2026-12-15" aria-label="15 December 2026" /><span>15</span></label>
+                <label class="arrival-day"><input type="radio" name="arrival" value="2026-12-16" aria-label="16 December 2026" /><span>16</span></label>
+                <label class="arrival-day"><input type="radio" name="arrival" value="2026-12-17" aria-label="17 December 2026" /><span>17</span></label>
+                <span class="arrival-unavailable" aria-label="18 December 2026, unavailable">18</span>
+                <span class="arrival-unavailable" aria-label="19 December 2026, unavailable">19</span>
+                <span class="arrival-unavailable" aria-label="20 December 2026, unavailable">20</span>
+                <span class="arrival-unavailable" aria-label="21 December 2026, unavailable">21</span>
+                <span class="arrival-unavailable" aria-label="22 December 2026, unavailable">22</span>
+                <span class="arrival-unavailable" aria-label="23 December 2026, unavailable">23</span>
+                <span class="arrival-unavailable" aria-label="24 December 2026, unavailable">24</span>
+                <span class="arrival-unavailable" aria-label="25 December 2026, unavailable">25</span>
+                <span class="arrival-unavailable" aria-label="26 December 2026, unavailable">26</span>
+                <span class="arrival-unavailable" aria-label="27 December 2026, unavailable">27</span>
+                <span class="arrival-unavailable" aria-label="28 December 2026, unavailable">28</span>
+                <span class="arrival-unavailable" aria-label="29 December 2026, unavailable">29</span>
+                <span class="arrival-unavailable" aria-label="30 December 2026, unavailable">30</span>
+                <span class="arrival-unavailable" aria-label="31 December 2026, unavailable">31</span>
+              </div>
+            </div>
+            </details>
+            <span class="err" data-for="arrival">Please select an arrival date from 14 to 17 December 2026.</span>
+          </fieldset>
 
           <div class="field">
             <label for="f-guests">Number of guests (including you)</label>
